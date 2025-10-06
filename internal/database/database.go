@@ -4,21 +4,18 @@ import (
 	"fmt"
 	"log"
 
+	"boiler/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-
-	"boiler/internal/config"
 )
 
 // DB is the database connection
 var DB *gorm.DB
 
-// Connect connects to the database
-func Connect() {
-	dbConfig := config.LoadDBConfig()
-
+// Init initializes the database connection
+func Init(cfg config.DBConfig) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
-		dbConfig.Host, dbConfig.User, dbConfig.Password, dbConfig.DBName, dbConfig.Port)
+		cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port)
 
 	var err error
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})

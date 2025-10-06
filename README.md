@@ -4,15 +4,21 @@ This is a boilerplate for a Go backend API using the Gin framework and PostgreSQ
 
 ## Folder Structure
 
-- `cmd/`: This directory contains the main application entry point. The `main.go` file in this directory is responsible for initializing the application, setting up the database connection, and starting the HTTP server.
+- `cmd/server/`: This directory contains the main application entry point. The `main.go` file in this directory is responsible for initializing the application, setting up the database connection, and starting the HTTP server.
 
-- `internal/`: This directory contains all the private application code. This code is not meant to be imported by other applications.
-  - `config/`: This directory contains the application configuration. The `config.go` file in this directory is responsible for loading the configuration from a `.env` file.
-  - `database/`: This directory contains the database connection and migration logic. The `database.go` file in this directory is responsible for connecting to the database.
-  - `models/`: This directory contains the data models for the application. Each file in this directory represents a single data model.
-  - `handlers/`: This directory contains the HTTP handlers for the application. The handlers are responsible for handling incoming HTTP requests, calling the appropriate services, and returning an HTTP response.
-  - `services/`: This directory contains the business logic for the application. The services are responsible for performing the core application logic, such as creating, reading, updating, and deleting data.
-  - `repositories/`: This directory contains the database interaction logic for the application. The repositories are responsible for interacting with the database, such as creating, reading, updating, and deleting records.
+- `config/`: This directory contains the application configuration. The `config.go` file in this directory is responsible for loading the configuration from a `.env` file.
+
+- `internal/`: This directory contains all the private application code, organized by domain.
+  - `user/`: This directory contains all the code related to the user domain.
+    - `handler/`: This directory contains the HTTP handlers for the user domain.
+    - `service/`: This directory contains the business logic for the user domain.
+    - `repository/`: This directory contains the database interaction logic for the user domain.
+    - `model/`: This directory contains the data models for the user domain.
+    - `dto/`: This directory contains the data transfer objects for the user domain.
+  - `common/`: This directory contains shared utilities, middleware, and error handling code.
+    - `middleware/`: This directory contains custom middleware for the application.
+    - `errors/`: This directory contains custom error types for the application.
+    - `utils/`: This directory contains utility functions for the application.
 
 - `pkg/`: This directory contains any public-facing libraries or utilities that can be imported by other applications.
 
@@ -59,8 +65,7 @@ This is a boilerplate for a Go backend API using the Gin framework and PostgreSQ
 ### Building
 
 To build the application, run the following command:
-```bash
-go build -o my-app cmd/main.go
+go build -o my-app cmd/server/main.go
 ```
 This will create a binary file named `my-app` in the root directory.
 
@@ -92,7 +97,7 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN go build -o my-app cmd/main.go
+RUN go build -o my-app cmd/server/main.go
 
 # Expose the port
 EXPOSE 8080
