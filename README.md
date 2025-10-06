@@ -1,64 +1,109 @@
 # Go Boilerplate
 
-This is a boilerplate for a Go backend API using the Gin framework and PostgreSQL.
+A production-ready Go REST API boilerplate built with the Gin framework, PostgreSQL, and Clean Architecture principles.
 
-## Folder Structure
+## Features
 
-- `cmd/server/`: This directory contains the main application entry point. The `main.go` file in this directory is responsible for initializing the application, setting up the database connection, and starting the HTTP server.
+- 🏗️ **Clean Architecture** - Organized by domains with clear separation of concerns
+- 🚀 **Gin Framework** - Fast HTTP web framework
+- 🗄️ **PostgreSQL + GORM** - Robust database integration with ORM
+- 🔧 **Environment Configuration** - Easy setup with environment variables
+- 🐳 **Docker Support** - Containerized deployment ready
+- 🔥 **Hot Reloading** - Development server with Air
+- 📚 **Comprehensive Documentation** - Architecture, API, and development guides
 
-- `config/`: This directory contains the application configuration. The `config.go` file in this directory is responsible for loading the configuration from a `.env` file.
+## Quick Start
 
-- `internal/`: This directory contains all the private application code, organized by domain.
-  - `user/`: This directory contains all the code related to the user domain.
-    - `handler/`: This directory contains the HTTP handlers for the user domain.
-    - `service/`: This directory contains the business logic for the user domain.
-    - `repository/`: This directory contains the database interaction logic for the user domain.
-    - `model/`: This directory contains the data models for the user domain.
-    - `dto/`: This directory contains the data transfer objects for the user domain.
-  - `common/`: This directory contains shared utilities, middleware, and error handling code.
-    - `middleware/`: This directory contains custom middleware for the application.
-    - `errors/`: This directory contains custom error types for the application.
-    - `utils/`: This directory contains utility functions for the application.
+1. **Clone and Setup**
+   ```bash
+   git clone <repository-url>
+   cd boiler
+   go mod tidy
+   ```
 
-- `pkg/`: This directory contains any public-facing libraries or utilities that can be imported by other applications.
+2. **Configure Environment**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your database credentials
+   ```
 
-- `scripts/`: This directory contains any helper scripts for the application, such as a script to run the application.
+3. **Run with Hot Reloading**
+   ```bash
+   # Install Air (if not already installed)
+   go install github.com/cosmtrek/air@latest
+   
+   # Start development server
+   air
+   ```
+
+4. **Test the API**
+   ```bash
+   curl http://localhost:8080/ping
+   # Response: {"message":"pong"}
+   ```
+
+## Documentation
+
+- 📖 **[Architecture Guide](docs/ARCHITECTURE.md)** - Detailed explanation of the application structure and flow
+- 🔗 **[API Documentation](docs/API.md)** - Complete API endpoint reference
+- 👨‍💻 **[Development Guide](docs/DEVELOPMENT.md)** - Setup instructions and coding standards
+
+## Project Structure
+
+```
+boiler/
+├── cmd/server/           # Application entry point
+├── config/              # Configuration management
+├── docs/                # Documentation files
+├── internal/            # Private application code
+│   ├── common/          # Shared utilities and middleware
+│   ├── database/        # Database connection
+│   └── user/           # User domain (example)
+│       ├── dto/        # Data transfer objects
+│       ├── handler/    # HTTP handlers
+│       ├── model/      # Domain models
+│       ├── repository/ # Data access layer
+│       └── service/    # Business logic
+├── pkg/                # Public libraries
+├── scripts/            # Helper scripts
+├── Dockerfile          # Docker configuration
+└── README.md          # This file
+```
+
+## API Endpoints
+
+### Health Check
+- `GET /ping` - API health check
+
+### User Management
+- `POST /users` - Create a new user
+- `GET /users/:id` - Get user by ID
+
+For detailed API documentation, see [API.md](docs/API.md).
 
 ## Development
 
-### Prerequisites
+See the [Development Guide](docs/DEVELOPMENT.md) for detailed setup instructions, coding standards, and best practices.
 
-- [Go](https://golang.org/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Air](https://github.com/cosmtrek/air)
+### Quick Development Setup
 
-### Setup
+1. **Prerequisites**: Go 1.21+, PostgreSQL 12+
+2. **Install dependencies**: `go mod tidy`
+3. **Setup database**: Create PostgreSQL database and configure `.env`
+4. **Install Air**: `go install github.com/cosmtrek/air@latest`
+5. **Start development**: `air`
 
-1.  Clone the repository:
-    ```bash
-    git clone <repository-url>
-    ```
-2.  Install dependencies:
-    ```bash
-    go mod tidy
-    ```
-3.  Create a `.env` file in the root directory with the following variables:
-    ```
-    DB_HOST=localhost
-    DB_PORT=5432
-    DB_USER=postgres
-    DB_PASSWORD=password
-    DB_NAME=postgres
-    ```
-4.  Install `air` for hot reloading:
-    ```bash
-    go install github.com/cosmtrek/air@latest
-    ```
-5.  Run the application with `air`:
-    ```bash
-    air
-    ```
-    This will start the application and automatically reload it when you make changes to the code.
+### Environment Variables
+
+Create a `.env` file:
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_NAME=boiler_dev
+PORT=8080
+```
 
 ## Building and Deployment
 
