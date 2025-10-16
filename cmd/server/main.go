@@ -5,41 +5,20 @@ import (
 
 	"boiler/config"
 	"boiler/internal/database"
-	userHandler "boiler/internal/user/handler"
-	userRepo "boiler/internal/user/repository"
-	userService "boiler/internal/user/service"
-
-	"github.com/gin-gonic/gin"
+	"boiler/internal/router"
 )
 
 func main() {
-	// Load config
-	cfg := config.LoadDBConfig()
-
-	// Initialize database
-	database.Init(cfg)
-
-	// Initialize user domain
-	userRepository := userRepo.NewUserRepository()
-	userService := userService.NewUserService(userRepository)
-	userHandler := userHandler.NewUserHandler(userService)
-
-	r := gin.Default()
-
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
-	// User routes
-	userRoutes := r.Group("/users")
-	{
-		userRoutes.POST("/", userHandler.CreateUser)
-		userRoutes.GET("/:id", userHandler.GetUser)
+	cfg := config.LoadConfig()
+	if err := config.InitializeApp(cfg.App); err != nil {
+		log.Fatalf("Failed to initialize application: %v", err)
 	}
+	database.Init(cfg.DB)
+	r := router.SetupRoutes(cfg.App)
 
-	if err := r.Run(":8080"); err != nil {
+	serverAddr := ":" + cfg.App.Port
+	log.Printf("Starting server on %s", serverAddr)
+	if err := r.Run(serverAddr); err != nil {
 		log.Fatalf("failed to run server: %v", err)
 	}
 }
